@@ -1,0 +1,154 @@
+# https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html
+# https://blog.local-optimum.net/getting-started-with-autoinstall-on-ubuntu-desktop-24-04-lts-147a1defb2de
+autoinstall:
+  version: 1
+  locale: en_US.UTF-8
+  refresh-installer:
+    update: yes 
+    channel: "stable/ubuntu-$REL"
+  early-commands:
+  - curtin in-target -- add-apt-repository universe  
+  network:
+    version: 2
+    renderer: NetworkManager
+    ethernets:
+          enp5s0:
+              dhcp4: true
+    wifis:
+      wlp2s0b1:
+        dhcp4: yes
+        access-points:
+          "SETUP-8634":
+            password: "coast8365circle"
+            ssid: "SETUP-8634"
+  identity:
+    realname: "Corbin Prebe"
+    hostname: cp-ubuntu
+    password: $1$egZUqXjI$KiS1oGNh8hxO.piZ5ZrLA0
+    username: corbin
+    ssh-key: $key   
+  ssh:
+    install-server: yes
+    authorized-keys:
+    - $key
+    allow-pw: true
+  snaps:
+    - name: code
+        classic: true
+    - name: android-studio 
+      classic: true
+    - name: git-ubuntu  
+      classic: true
+    - name: gitkraken  
+      classic: true
+    - name: teams-for-linux 
+      classic: false
+    - name: powershell
+      classic: true
+    - name: androidsdk 
+      classic: false
+    - name: google-cloud-sdk   
+      classic: true
+    - name: dotnet-sdk
+      classic: true
+    - name: firefox
+      classic: false
+  # storage:
+  #   layout:
+  #     name: lvm
+  packages:
+    - vim
+    - snapd
+    - git
+    - git-all
+    - dh-autoreconf
+    - libcurl4-gnutls-dev
+    - libexpat1-dev
+    - gettext
+    - libz-dev
+    - libssl-dev
+    - asciidoc
+    - xmlto
+    - docbook2x
+    - build-essential
+    - libncurses5-dev
+    - libncursesw5-dev
+    - xz-utils
+    - tk-dev
+    - libffi-dev
+    - liblzma-dev
+    - python3-dev
+    - python3-venv
+    - python3-pip
+    - python3-setuptools
+    - python3-wheel
+    - python3-numpy
+    - python3-scipy
+    - python3-matplotlib
+    - python3-pandas
+    - python3-sklearn
+    - python3-seaborn
+    - python3-statsmodels
+    - python3-sympy
+    - python3-pyqt5
+    - python3-kivy
+    - python3-opencv
+    - python3-tensorflow
+    - python3-pytorch
+    - python3-jupyter
+    - gnome-terminal
+    - docker
+    - ca-certificates
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-buildx-plugin
+    - docker-compose-plugin
+    - nodejs
+    - npm
+    - build-essential
+    - curl
+    - arduino
+    - arduino-builder
+    - arduino-core-avr
+    - arduino-ctags
+    - arduino-make
+    - esptool
+    - avrdude
+    - openocm
+    - stm32flash
+    - stlink-gui
+    - stlink-tools
+    - chrome-gnome-shell
+    - google-android-build-tools-installer
+    - google-android-emulator-installer
+    - google-android-ndk-installer
+    - google-chrome-stable
+    - thunderbird
+    - sqlite
+    - libfuse2
+    - flatpak
+  late-commands:
+    - curtin in-target -- apt update
+    - curtin in-target -- apt upgrade -y
+    - curtin in-target -- modprobe kvm
+    - curtin in-target -- modprove kvm_intel
+    - curtin in-target -- lsmod | grep kvm
+    - curtin in-target -- ls -al /dev/kvm
+    - curtin in-target -- sudo usermod -aG kvm $USER
+    - curtin in-target -- groupadd docker
+    - curtin in-target -- usermod -aG docker $USER
+    - curtin in-target -- newgrp docker
+    - curtin in-tar get -- chown "$USER":"$USER" /home/"$USER"/.docker -R
+    - curtin in-tar get -- chmod g+rwx "$HOME/.docker" -R
+    - curtin in-tar get -- sudo systemctl enable docker.service
+    - curtin in-tar get -- sudo systemctl enable containerd.service
+    - curtin in-tar get -- apt-get update
+    - curtin in-tar get -- ls -l /dev/ttyACM*
+    - curtin in-tar get -- SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", GROUP="plugdev", MODE="0666"
+  error-commands:
+  - echo OH NOES
+  - sleep 5
+  - echo OH WELL
+  updates: all
+  timezone: Pacific/Los_Angeles
