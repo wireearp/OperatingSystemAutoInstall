@@ -5,8 +5,16 @@ autoinstall:
     hostname: cp-ubuntu
     password: $1$egZUqXjI$KiS1oGNh8hxO.piZ5ZrLA0
     username: corbin
+  timezone: Pacific/Los_Angeles
+  storage:
+    layout:
+      name: lvm
   network:
     version: 2
+    renderer: NetworkManager
+    ethernets:
+        enp5s0:
+            dhcp4: true
     wifis:
       wlp2s0b1:
         dhcp4: yes
@@ -14,7 +22,6 @@ autoinstall:
           "SETUP-8634":
             password: "coast8365circle"
             ssid: "SETUP-8634"
-
   ssh:
     install-server: yes
     allow-pw: true
@@ -111,29 +118,21 @@ autoinstall:
     - sqlite
     - libfuse2
     - flatpak
-  late-commands:
-    - curtin in-target -- apt update
-    - curtin in-target -- apt upgrade -y
-    - curtin in-target -- modprobe kvm
-    - curtin in-target -- modprove kvm_intel
-    - curtin in-target -- lsmod | grep kvm
-    - curtin in-target -- ls -al /dev/kvm
-    - curtin in-target -- sudo usermod -aG kvm $USER
-    - curtin in-target -- groupadd docker
-    - curtin in-target -- usermod -aG docker $USER
-    - curtin in-target -- newgrp docker
-    - curtin in-tar get -- chown "$USER":"$USER" /home/"$USER"/.docker -R
-    - curtin in-tar get -- chmod g+rwx "$HOME/.docker" -R
-    - curtin in-tar get -- sudo systemctl enable docker.service
-    - curtin in-tar get -- sudo systemctl enable containerd.service
-    - curtin in-tar get -- apt-get update
-    - curtin in-tar get -- ls -l /dev/ttyACM*
-    - curtin in-tar get -- SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", GROUP="plugdev", MODE="0666"
-  error-commands:
-  - echo OH NOES
-  - sleep 5
-  - echo OH WELL
-  updates: all
-  timezone: Pacific/Los_Angeles
-  # https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html
-  # https://blog.local-optimum.net/getting-started-with-autoinstall-on-ubuntu-desktop-24-04-lts-147a1defb2de
+  # late-commands:
+  #   - curtin in-target -- apt update
+  #   - curtin in-target -- apt upgrade -y
+  #   - curtin in-target -- modprobe kvm
+  #   - curtin in-target -- modprove kvm_intel
+  #   - curtin in-target -- lsmod | grep kvm
+  #   - curtin in-target -- ls -al /dev/kvm
+  #   - curtin in-target -- sudo usermod -aG kvm $USER
+  #   - curtin in-target -- groupadd docker
+  #   - curtin in-target -- usermod -aG docker $USER
+  #   - curtin in-target -- newgrp docker
+  #   - curtin in-tar get -- chown "$USER":"$USER" /home/"$USER"/.docker -R
+  #   - curtin in-tar get -- chmod g+rwx "$HOME/.docker" -R
+  #   - curtin in-tar get -- sudo systemctl enable docker.service
+  #   - curtin in-tar get -- sudo systemctl enable containerd.service
+  #   - curtin in-tar get -- apt-get update
+  #   - curtin in-tar get -- ls -l /dev/ttyACM*
+  #   - curtin in-tar get -- SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", GROUP="plugdev", MODE="0666"
