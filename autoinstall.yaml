@@ -1,19 +1,12 @@
-# https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html
-# https://blog.local-optimum.net/getting-started-with-autoinstall-on-ubuntu-desktop-24-04-lts-147a1defb2de
 autoinstall:
   version: 1
-  locale: en_US.UTF-8
-  refresh-installer:
-    update: yes 
-    channel: "stable/ubuntu-$REL"
-  early-commands:
-  - curtin in-target -- add-apt-repository universe  
+  identity:
+    realname: "Corbin Prebe"
+    hostname: cp-ubuntu
+    password: $1$egZUqXjI$KiS1oGNh8hxO.piZ5ZrLA0
+    username: corbin
   network:
     version: 2
-    renderer: NetworkManager
-    ethernets:
-          enp5s0:
-              dhcp4: true
     wifis:
       wlp2s0b1:
         dhcp4: yes
@@ -21,16 +14,9 @@ autoinstall:
           "SETUP-8634":
             password: "coast8365circle"
             ssid: "SETUP-8634"
-  identity:
-    realname: "Corbin Prebe"
-    hostname: cp-ubuntu
-    password: $1$egZUqXjI$KiS1oGNh8hxO.piZ5ZrLA0
-    username: corbin
-    ssh-key: $key   
+
   ssh:
     install-server: yes
-    authorized-keys:
-    - $key
     allow-pw: true
   snaps:
     - name: code
@@ -53,9 +39,6 @@ autoinstall:
       classic: true
     - name: firefox
       classic: false
-  # storage:
-  #   layout:
-  #     name: lvm
   packages:
     - vim
     - snapd
@@ -152,3 +135,5 @@ autoinstall:
   - echo OH WELL
   updates: all
   timezone: Pacific/Los_Angeles
+  # https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html
+  # https://blog.local-optimum.net/getting-started-with-autoinstall-on-ubuntu-desktop-24-04-lts-147a1defb2de
