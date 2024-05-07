@@ -22,9 +22,6 @@ autoinstall:
           "SETUP-8634":
             password: "coast8365circle"
             ssid: "SETUP-8634"
-  ssh:
-    install-server: yes
-    allow-pw: true
   snaps:
     - name: code
         classic: true
